@@ -1,0 +1,8 @@
+.vuforia-item-details label {
+	width: 100px;
+	display: inline-block;
+}
+
+.vuforia-status {
+	font-weight: bold;
+}

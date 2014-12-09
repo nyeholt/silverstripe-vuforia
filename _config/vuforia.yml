@@ -1,0 +1,13 @@
+---
+Name: vuforia_config
+---
+Injector:
+  VuforiaUploadField:
+    properties:
+      vuforiaAPIService: %$VuforiaAPIService
+  VuforiaAPIService:
+    properties:
+      signatureBuilder: %$SignatureBuilder
+  VuforiaImage:
+    properties:
+      vuforiaAPIService: %$VuforiaAPIService

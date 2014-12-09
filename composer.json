@@ -1,0 +1,16 @@
+{
+	"name": "silverstripe/vuforia",
+	"description": "Adds a custom image data object type that will be persisted to Vuforia",
+	"type": "silverstripe-module",
+	"keywords": ["silverstripe", "vuforia", "image", "augmented reality"],
+	"authors": [
+	{
+		"name": "Marcus Nyeholt",
+		"email": "marcus@silverstripe.com.au"
+	}
+	],
+	"require": {
+		"pear/http_request2": "dev-trunk"
+	},
+	"minimum-stability": "dev"
+}
