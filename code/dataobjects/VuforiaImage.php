@@ -109,7 +109,15 @@ class VuforiaImage extends Image {
 			$fields->addFieldToTab('Root.Main', ReadonlyField::create('VfErrors', 'Vuforia messages',  $this->Messages));
 		}
 		
-		$text = str_replace(' ', '&nbsp;', Convert::raw2xml(json_encode(json_decode(($this->VuforiaData)), JSON_PRETTY_PRINT)));
+		$text = '';
+		
+		if (defined('JSON_PRETTY_PRINT')) {
+			$text = str_replace(' ', '&nbsp;', Convert::raw2xml(json_encode(json_decode($this->VuforiaData), JSON_PRETTY_PRINT)));
+		} else {
+			$basic = str_replace('","', "\",\n\"", $this->VuforiaData);
+			$text = str_replace(' ', '&nbsp;', nl2br(Convert::raw2xml($basic)));
+		}
+		
 		
 		$fields->addFieldToTab('Root.Main', LiteralField::create('VuforiaDataInfo', nl2br($text)));
 		
