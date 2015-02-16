@@ -89,13 +89,16 @@ class VuforiaAPIService {
 					$res = json_decode($res, true);
 					if (isset($res['result_code']) && $res['result_code'] == 'TargetNameExist') {
 						$image->Messages = "A file with the name ${data['name']} exists, please remove it from Vuforia first";
+					} else if (isset($res['result_code'])) {
+						$image->Messages = $res['result_code'];
+						if ($response->getReasonPhrase()) {
+							$image->Messages .= ' (' . $response->getReasonPhrase() . ')';
+						}
 					}
 				} else {
 					$image->Messages = 'Failed uploading to Vuforia: ' . $response->getStatus() . ' ' .
 						$response->getReasonPhrase(). ' ' . $response->getBody();
 				}
-				
-				
 			}
 
 		} catch (HTTP_Request2_Exception $e) {
