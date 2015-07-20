@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe/vuforia",
+	"name": "silverstripe-australia/vuforia",
 	"description": "Adds a custom image data object type that will be persisted to Vuforia",
 	"type": "silverstripe-module",
 	"keywords": ["silverstripe", "vuforia", "image", "augmented reality"],
