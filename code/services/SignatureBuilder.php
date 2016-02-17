@@ -11,66 +11,61 @@
  * 
  */
  
-class SignatureBuilder{
-	
-	public function tmsSignature( $request , $secret_key ){
-		
-		$method = $request->getMethod();
-		// The HTTP Header fields are used to authenticate the request
-		$requestHeaders = $request->getHeaders();
-		// note that header names are converted to lower case
-		$dateValue = $requestHeaders['date'];
-		
-		$requestPath = $request->getURL()->getPath();
-		
-		$hexDigest = 'd41d8cd98f00b204e9800998ecf8427e'; // Hex digest of an empty string
-		$contentType = '';
-		
-		// Not all requests will define a content-type
-		if( isset( $requestHeaders['content-type'] )) {
-			$contentType = $requestHeaders['content-type'];
-		}
-	
-		if ( $method == 'GET' || $method == 'DELETE' ) {
-			// Do nothing because the strings are already set correctly
-		} else if ( $method == 'POST' || $method == 'PUT' ) {
-			// If this is a POST or PUT the request should have a request body
-			$hexDigest = md5( $request->getBody() , false );
-			
-		} else {
-			error_log("ERROR: Invalid content type passed to Sig Builder");
-		}
-		
+class SignatureBuilder
+{
+    
+    public function tmsSignature($request, $secret_key)
+    {
+        $method = $request->getMethod();
+        // The HTTP Header fields are used to authenticate the request
+        $requestHeaders = $request->getHeaders();
+        // note that header names are converted to lower case
+        $dateValue = $requestHeaders['date'];
+        
+        $requestPath = $request->getURL()->getPath();
+        
+        $hexDigest = 'd41d8cd98f00b204e9800998ecf8427e'; // Hex digest of an empty string
+        $contentType = '';
+        
+        // Not all requests will define a content-type
+        if (isset($requestHeaders['content-type'])) {
+            $contentType = $requestHeaders['content-type'];
+        }
+    
+        if ($method == 'GET' || $method == 'DELETE') {
+            // Do nothing because the strings are already set correctly
+        } elseif ($method == 'POST' || $method == 'PUT') {
+            // If this is a POST or PUT the request should have a request body
+            $hexDigest = md5($request->getBody(), false);
+        } else {
+            error_log("ERROR: Invalid content type passed to Sig Builder");
+        }
+        
 
 
-		$toDigest = $method . "\n" . $hexDigest . "\n" . $contentType . "\n" . $dateValue . "\n" . $requestPath ;
+        $toDigest = $method . "\n" . $hexDigest . "\n" . $contentType . "\n" . $dateValue . "\n" . $requestPath ;
 
-		$shaHashed = "";
-		
-		try {
-			// the SHA1 hash needs to be transformed from hexidecimal to Base64
-			$shaHashed = $this->hexToBase64( hash_hmac("sha1", $toDigest , $secret_key) );
-			
-		} catch ( Exception $e) {
-			$e->getMessage();
-		}
+        $shaHashed = "";
+        
+        try {
+            // the SHA1 hash needs to be transformed from hexidecimal to Base64
+            $shaHashed = $this->hexToBase64(hash_hmac("sha1", $toDigest, $secret_key));
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
 
-		return $shaHashed;	
-	}
-	
-	
-	private function hexToBase64($hex){
-	
-		$return = "";
-	
-		foreach(str_split($hex, 2) as $pair){
-	
-			$return .= chr(hexdec($pair));
-	
-		}
-	
-		return base64_encode($return);
-	}
-
-
+        return $shaHashed;
+    }
+    
+    
+    private function hexToBase64($hex)
+    {
+        $return = "";
+    
+        foreach (str_split($hex, 2) as $pair) {
+            $return .= chr(hexdec($pair));
+        }
+    
+        return base64_encode($return);
+    }
 }
